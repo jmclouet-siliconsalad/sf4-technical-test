@@ -11,6 +11,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class SecurityController extends AbstractController
 {
     /**
+     * @Route("", name="homepage")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function homepage()
+    {
+        return $this->redirectToRoute("comment_index");
+    }
+
+    /**
      * @Route("/login", name="login")
      * @return \Symfony\Component\HttpFoundation\Response
      */

@@ -21,5 +21,4 @@ security:
                 path: security_logout
             anonymous: ~
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/comment, role: ROLE_USER }

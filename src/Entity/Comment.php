@@ -21,11 +21,18 @@ class Comment
     private $id;
 
     /**
-     * @var string The Depot of Comment
+     * @var string The GitHubUsername of Comment
      *
      * @ORM\Column(type="string", nullable=false)
      */
-    private $depot;
+    private $gitHubUsername;
+
+    /**
+     * @var string The GitHubRepository of Comment
+     *
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $gitHubRepository;
 
     /**
      * @var string The Content of Comment
@@ -52,18 +59,36 @@ class Comment
     /**
      * @return string
      */
-    public function getDepot(): ?string
+    public function getGitHubUsername(): ?string
     {
-        return $this->depot;
+        return $this->gitHubUsername;
     }
 
     /**
-     * @param string $depot
+     * @param string $gitHubUsername
      * @return Comment
      */
-    public function setDepot(string $depot): Comment
+    public function setGitHubUsername(string $gitHubUsername): Comment
     {
-        $this->depot = $depot;
+        $this->gitHubUsername = $gitHubUsername;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGitHubRepository(): ?string
+    {
+        return $this->gitHubRepository;
+    }
+
+    /**
+     * @param string $gitHubRepository
+     * @return Comment
+     */
+    public function setGitHubRepository(string $gitHubRepository): Comment
+    {
+        $this->gitHubRepository = $gitHubRepository;
         return $this;
     }
 
