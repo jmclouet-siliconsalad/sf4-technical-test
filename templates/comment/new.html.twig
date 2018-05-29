@@ -1,1 +1,4 @@
-{{ username }}
+{{ form_start(form) }}
+{{ form_row(form.depot, {'value':form.depot.vars.data}) }}
+{{ form_rest(form) }}
+{{ form_end(form) }}

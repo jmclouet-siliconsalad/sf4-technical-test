@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Form\CommentType;
+use App\Handler\CommentHandler;
+use App\Model\CommentModel;
+use App\Service\GitHubApiService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/comment", name="comment_")
@@ -15,38 +18,45 @@ class CommentController extends AbstractController
 {
     /**
      * @Route("", name="index")
+     * @param Request $request
+     * @param GitHubApiService $gitHubApiService
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function index()
+    public function index(Request $request, GitHubApiService $gitHubApiService)
     {
+        $users = [];
+        $username = $request->query->get("username");
+
+        if ($request->query->has("username") && "" != $username) {
+            $users = $gitHubApiService->getUsersByUsername($username);
+        };
+
         return $this->render("comment/index.html.twig", [
-            "gitHubUsers" => [
-                0 => [
-                    "id" => 1,
-                    "login" => "JM",
-                ]
-            ]
+            "gitHubUsers" => $users,
         ]);
     }
 
     /**
      * @Route("/{username}/comment", name="new")
-     * @param User $user
+     * @param Request $request
+     * @param CommentHandler $commentHandler
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function new(User $user)
+    public function new(Request $request, CommentHandler $commentHandler)
     {
-        return $this->render("comment/new.html.twig", [
-            "username" => $user->getUsername(),
-        ]);
-    }
+        $comment = new CommentModel();
+        $comment->depot = $request->get("username") . "/";
 
-    /**
-     * @Route("/create", name="create")
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function create()
-    {
-        return new Response("Hello3");
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $commentHandler->create($comment->toArray(), $this->getUser());
+        }
+
+        return $this->render('comment/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

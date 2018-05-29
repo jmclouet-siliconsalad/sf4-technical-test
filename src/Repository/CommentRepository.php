@@ -16,4 +16,15 @@ class CommentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Comment::class);
     }
+
+    /**
+     * @param string $username
+     * @return array
+     */
+    public function findByUsername(string $username): array
+    {
+        return $this->findBy([
+            "username" => $username
+        ]);
+    }
 }
