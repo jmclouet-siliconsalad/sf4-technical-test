@@ -18,13 +18,13 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $username
+     * @param string $gitHubUsername
      * @return array
      */
-    public function findByUsername(string $username): array
+    public function findByGitHubUsername(string $gitHubUsername): array
     {
         return $this->findBy([
-            "username" => $username
+            "gitHubUsername" => $gitHubUsername
         ]);
     }
 }

@@ -1,4 +1,36 @@
-{{ form_start(form) }}
-{{ form_row(form.depot, {'value':form.depot.vars.data}) }}
-{{ form_rest(form) }}
-{{ form_end(form) }}
+{% extends 'base.html.twig' %}
+
+{% block title %}Comment new{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_row(form.depot, {'value':form.depot.vars.data}) }}
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Written by</th>
+            <th>GitHub Username</th>
+            <th>GitHub Repository</th>
+            <th>Content</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+                <td>{{ comment.user.username }}</td>
+                <td>{{ comment.gitHubUsername }}</td>
+                <td>{{ comment.gitHubRepository }}</td>
+                <td>{{ comment.content }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no comments found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

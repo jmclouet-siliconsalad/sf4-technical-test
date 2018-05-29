@@ -45,8 +45,10 @@ class CommentController extends AbstractController
      */
     public function new(Request $request, CommentHandler $commentHandler)
     {
+        $username = $request->get("username");
+
         $comment = new CommentModel();
-        $comment->depot = $request->get("username") . "/";
+        $comment->depot = $username . "/";
 
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
@@ -57,6 +59,7 @@ class CommentController extends AbstractController
 
         return $this->render('comment/new.html.twig', [
             'form' => $form->createView(),
+            'comments' => $commentHandler->getByUsername($username),
         ]);
     }
 }

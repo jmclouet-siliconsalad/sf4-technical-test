@@ -28,7 +28,7 @@ class CommentHandler
     {
         $commentRepository = $this->objectManager->getRepository("App:Comment");
 
-        return new ArrayCollection($commentRepository->findByUsername($username));
+        return new ArrayCollection($commentRepository->findByGitHubUsername($username));
     }
 
     /**
