@@ -2,35 +2,69 @@
 
 {% block title %}Comment new{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        body {
+            max-width: 60%;
+            margin: auto;
+            margin-top: 60px;
+        }
+
+        .table {
+            margin-top: 20px;
+        }
+
+        .control-group {
+            margin-top: 10px;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     {{ form_start(form) }}
-    {{ form_row(form.depot, {'value':form.depot.vars.data}) }}
-    {{ form_rest(form) }}
+    <div class="control-group">
+        {{ form_label(form.depot) }}
+        <div class="controls">
+            {{ form_widget(form.depot, {'value':form.depot.vars.data}) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label(form.content) }}
+        <div class="controls">
+            {{ form_widget(form.content) }}
+        </div>
+    </div>
+    <div class="control-group">
+        {{ form_label(form.submit) }}
+        <div class="controls">
+            {{ form_widget(form.submit) }}
+        </div>
+    </div>
     {{ form_end(form) }}
-
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Written by</th>
-            <th>GitHub Username</th>
-            <th>GitHub Repository</th>
-            <th>Content</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for comment in comments %}
+    {% if comments %}
+        <table class="table">
+            <thead>
             <tr>
-                <td>{{ comment.user.username }}</td>
-                <td>{{ comment.gitHubUsername }}</td>
-                <td>{{ comment.gitHubRepository }}</td>
-                <td>{{ comment.content }}</td>
+                <th>Written by</th>
+                <th>GitHub Username</th>
+                <th>GitHub Repository</th>
+                <th>Content</th>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no comments found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
+            </thead>
+            <tbody>
+            {% for comment in comments %}
+                <tr>
+                    <td>{{ comment.user.username }}</td>
+                    <td>{{ comment.gitHubUsername }}</td>
+                    <td>{{ comment.gitHubRepository }}</td>
+                    <td>{{ comment.content }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No comments found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 {% endblock %}
