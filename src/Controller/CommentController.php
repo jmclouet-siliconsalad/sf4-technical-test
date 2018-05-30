@@ -41,10 +41,13 @@ class CommentController extends AbstractController
      * @Route("/{username}/comment", name="new")
      * @param Request $request
      * @param CommentHandler $commentHandler
+     * @param GitHubApiService $gitHubApiService
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function new(Request $request, CommentHandler $commentHandler)
+    public function new(Request $request, CommentHandler $commentHandler, GitHubApiService $gitHubApiService)
     {
+        $error = null;
         $username = $request->get("username");
 
         $comment = new CommentModel();
@@ -54,12 +57,17 @@ class CommentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $commentHandler->create($comment->toArray(), $this->getUser());
+            if ($gitHubApiService->checkUserExistByUsername($username)) {
+                $commentHandler->create($comment->toArray(), $this->getUser());
+            } else {
+                $error = "User doesn't exist.";
+            }
         }
 
         return $this->render('comment/new.html.twig', [
             'form' => $form->createView(),
             'comments' => $commentHandler->getByUsername($username),
+            'error' => $error,
         ]);
     }
 }

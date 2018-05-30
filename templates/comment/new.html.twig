@@ -21,6 +21,12 @@
 {% endblock %}
 
 {% block body %}
+    {% if error %}
+        <div class="alert alert-danger">
+            <strong>Error !</strong>
+            {{ error }}
+        </div>
+    {% endif %}
     {{ form_start(form) }}
     <div class="control-group">
         {{ form_label(form.depot) }}
@@ -61,7 +67,12 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="4">No comments found</td>
+                    <td colspan="4">
+                        <div class="alert alert-info">
+                            <strong>No comments found</strong>
+                            {{ error }}
+                        </div>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
