@@ -11,6 +11,10 @@ class GitHubApiService
      */
     public function getUsersByUsername(string $username): array
     {
+        if (!$username) {
+            return [];
+        }
+
         $url = 'api.github.com/search/users?q=' . $username;
         $response = (new \GuzzleHttp\Client())->request('GET', $url);
 

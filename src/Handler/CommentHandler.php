@@ -22,11 +22,15 @@ class CommentHandler
 
     /**
      * @param string $username
-     * @return Collection
+     * @return Collection|null
      */
-    public function getByUsername(string $username): Collection
+    public function getByUsername(string $username): ?Collection
     {
         $commentRepository = $this->objectManager->getRepository("App:Comment");
+
+        if (!$username) {
+            return null;
+        }
 
         return new ArrayCollection($commentRepository->findByGitHubUsername($username));
     }
