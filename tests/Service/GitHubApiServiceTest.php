@@ -53,4 +53,14 @@ class GitHubApiServiceTest extends TestCase
 
         $this->assertNotEquals([], $users);
     }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function testCheckUserExists()
+    {
+        $users = $this->gitHubApiService->checkUserExistByUsername("stadline");
+
+        $this->assertEquals(true, $users);
+    }
 }
